@@ -28,4 +28,4 @@ Feel free to explore and reach out if you have any questions!
 
 1. Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/munshi-rishad/BusTicketCounterManagement-Repository.git
+   https://github.com/munshi-rishad/DataBase-BusTicketCounterManagement.git
