@@ -108,58 +108,128 @@ Replace `ManagerTable` with `TicketAgentTable`, `TicketInfoTable` or `CustomerIn
 
 ### Tables in Oracle
 
-1. **manager**
-   ![manager structure](screenshots/tables/01_manager_structure.png)
-   ![manager data](screenshots/tables/01_manager_data.png)
+Each table shows its structure (`CREATE TABLE` + `DESC`) and the data inside it.
 
-2. **ticket_agent**
-   ![ticket_agent structure](screenshots/tables/02_ticket_agent_structure.png)
-   ![ticket_agent data](screenshots/tables/02_ticket_agent_data.png)
+#### 1. manager
 
-3. **ticket_info**
-   ![ticket_info structure](screenshots/tables/03_ticket_info_structure.png)
-   ![ticket_info data](screenshots/tables/03_ticket_info_data.png)
+**Structure**
 
-4. **customer_info**
-   ![customer_info structure](screenshots/tables/04_customer_info_structure.png)
-   ![customer_info data](screenshots/tables/04_customer_info_data.png)
+![manager structure](screenshots/tables/01_manager_structure.png)
 
-5. **payment_details**
-   ![payment_details structure](screenshots/tables/05_payment_details_structure.png)
-   ![payment_details data](screenshots/tables/05_payment_details_data.png)
+**Data**
 
-6. **passenger_info**
-   ![passenger_info structure](screenshots/tables/06_passenger_info_structure.png)
-   ![passenger_info data](screenshots/tables/06_passenger_info_data.png)
+![manager data](screenshots/tables/01_manager_data.png)
 
-7. **route**
-   ![route structure](screenshots/tables/07_route_structure.png)
-   ![route data](screenshots/tables/07_route_data.png)
+#### 2. ticket_agent
 
-8. **bus_info**
-   ![bus_info structure](screenshots/tables/08_bus_info_structure.png)
-   ![bus_info data](screenshots/tables/08_bus_info_data.png)
+**Structure**
 
-9. **info_seat**
-   ![info_seat structure](screenshots/tables/09_info_seat_structure.png)
-   ![info_seat data](screenshots/tables/09_info_seat_data.png)
+![ticket_agent structure](screenshots/tables/02_ticket_agent_structure.png)
+
+**Data**
+
+![ticket_agent data](screenshots/tables/02_ticket_agent_data.png)
+
+#### 3. ticket_info
+
+**Structure**
+
+![ticket_info structure](screenshots/tables/03_ticket_info_structure.png)
+
+**Data**
+
+![ticket_info data](screenshots/tables/03_ticket_info_data.png)
+
+#### 4. customer_info
+
+**Structure**
+
+![customer_info structure](screenshots/tables/04_customer_info_structure.png)
+
+**Data**
+
+![customer_info data](screenshots/tables/04_customer_info_data.png)
+
+#### 5. payment_details
+
+**Structure**
+
+![payment_details structure](screenshots/tables/05_payment_details_structure.png)
+
+**Data**
+
+![payment_details data](screenshots/tables/05_payment_details_data.png)
+
+#### 6. passenger_info
+
+**Structure**
+
+![passenger_info structure](screenshots/tables/06_passenger_info_structure.png)
+
+**Data**
+
+![passenger_info data](screenshots/tables/06_passenger_info_data.png)
+
+#### 7. route
+
+**Structure**
+
+![route structure](screenshots/tables/07_route_structure.png)
+
+**Data**
+
+![route data](screenshots/tables/07_route_data.png)
+
+#### 8. bus_info
+
+**Structure**
+
+![bus_info structure](screenshots/tables/08_bus_info_structure.png)
+
+**Data**
+
+![bus_info data](screenshots/tables/08_bus_info_data.png)
+
+#### 9. info_seat
+
+**Structure**
+
+![info_seat structure](screenshots/tables/09_info_seat_structure.png)
+
+**Data**
+
+![info_seat data](screenshots/tables/09_info_seat_data.png)
 
 ### Queries and Views
 
 All query screenshots are in [`screenshots/queries`](screenshots/queries). A few examples:
 
-- **Aggregate function** – average agent salary for each manager
-  ![aggregate function](screenshots/queries/03_aggregate_function.png)
-- **Inner join** – each ticket with the agent who sold it
-  ![inner join](screenshots/queries/08_inner_join.png)
-- **Complex view** – tickets sold and total sales for each manager
-  ![complex view](screenshots/queries/13_complex_view.png)
+#### Aggregate function
+
+Average agent salary for each manager.
+
+![aggregate function](screenshots/queries/03_aggregate_function.png)
+
+#### Inner join
+
+Each ticket with the agent who sold it.
+
+![inner join](screenshots/queries/08_inner_join.png)
+
+#### Complex view
+
+Tickets sold and total sales for each manager.
+
+![complex view](screenshots/queries/13_complex_view.png)
 
 ### Java Connection (XAMPP + MySQL)
 
-- **Code**
-  ![Java code](screenshots/java/manager_code.png)
-- **Output**
-  ![Java output](screenshots/java/manager_output.png)
+#### Code
+
+![Java code](screenshots/java/manager_code.png)
+
+#### Output
+
+![Java output](screenshots/java/manager_output.png)
 
 More screenshots for each table are in [`screenshots/java`](screenshots/java).
