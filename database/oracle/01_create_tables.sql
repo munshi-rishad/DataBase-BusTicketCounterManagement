@@ -19,7 +19,7 @@ CREATE TABLE ticket_agent (
     agent_phone VARCHAR2(11) UNIQUE NOT NULL,
     agent_salary NUMBER(5) DEFAULT 15000 NOT NULL CHECK (agent_salary > 0),
     ticket_agent_hire_date DATE DEFAULT SYSDATE NOT NULL,
-    manager_id NUMBER(5) NOT NULL,
+    manager_id NUMBER(3) NOT NULL,
     CONSTRAINT chk_agent_phone CHECK (LENGTH(agent_phone) = 11),
     CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES manager(manager_id)
 );
@@ -72,34 +72,34 @@ CREATE TABLE passenger_info (
     CONSTRAINT FK_customer_info FOREIGN KEY (customer_id) REFERENCES customer_info(customer_id)
 );
 
--- 7. info_seat: Seat given to each passenger
-CREATE TABLE info_seat (
-    seat_id VARCHAR2(10) PRIMARY KEY,
-    seat_type VARCHAR2(20) NOT NULL CHECK (seat_type IN ('WINDOW', 'AISLE')),
-    passenger_id NUMBER(5) NOT NULL,
-    CONSTRAINT FK_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id)
+-- 7. route: Routes (destination and distance from Dhaka)
+CREATE TABLE route (
+    route_id VARCHAR2(4) PRIMARY KEY,
+    distance NUMBER(5,1) NOT NULL,
+    stoppage_location VARCHAR2(20) NOT NULL
 );
 
--- 8. bus_info: Buses and the passenger on board
+-- 8. bus_info: Buses (each bus runs on one route)
 CREATE TABLE bus_info (
     bus_id NUMBER(5) PRIMARY KEY,
     bus_no VARCHAR2(10) NOT NULL,
-    bus_type VARCHAR2(10) NOT NULL CHECK (bus_type IN ('AC', 'Non-AC')),
+    bus_type VARCHAR2(10) NOT NULL CHECK (bus_type IN ('AC', 'NON AC')),
     departure_time DATE NOT NULL,
     starting_point VARCHAR2(20) NOT NULL,
     destination VARCHAR2(20) NOT NULL,
     capacity NUMBER(3) DEFAULT 50 CHECK (capacity > 0) NOT NULL,
-    passenger_id NUMBER(5) NOT NULL,
-    CONSTRAINT FK_bus_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id)
+    route_id VARCHAR2(4) NOT NULL,
+    CONSTRAINT fk_bus_route FOREIGN KEY (route_id) REFERENCES route(route_id)
 );
 
--- 9. route: Route / stoppage of each bus
-CREATE TABLE route (
-    route_id VARCHAR2(4) PRIMARY KEY,
-    distance NUMBER(5,1) NOT NULL,
-    stoppage_location VARCHAR2(20) NOT NULL,
+-- 9. info_seat: Seat of each passenger on a bus
+CREATE TABLE info_seat (
+    seat_id VARCHAR2(10) PRIMARY KEY,
+    seat_type VARCHAR2(20) NOT NULL CHECK (seat_type IN ('WINDOW', 'AISLE')),
+    passenger_id NUMBER(5) NOT NULL,
     bus_id NUMBER(5) NOT NULL,
-    CONSTRAINT fk_bus_id FOREIGN KEY (bus_id) REFERENCES bus_info(bus_id)
+    CONSTRAINT FK_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id),
+    CONSTRAINT fk_seat_bus FOREIGN KEY (bus_id) REFERENCES bus_info(bus_id)
 );
 
 -- Check the structure of every table
@@ -109,6 +109,6 @@ DESC ticket_info;
 DESC customer_info;
 DESC payment_details;
 DESC passenger_info;
-DESC info_seat;
-DESC bus_info;
 DESC route;
+DESC bus_info;
+DESC info_seat;

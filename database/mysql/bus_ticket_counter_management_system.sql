@@ -78,43 +78,43 @@ CREATE TABLE passenger_info (
     CONSTRAINT FK_customer_info FOREIGN KEY (customer_id) REFERENCES customer_info(customer_id)
 );
 
--- 7. info_seat: Seat given to each passenger
-CREATE TABLE info_seat (
-    seat_id VARCHAR(10) PRIMARY KEY,
-    seat_type VARCHAR(20) NOT NULL CHECK (seat_type IN ('WINDOW', 'AISLE')),
-    passenger_id INT NOT NULL,
-    CONSTRAINT FK_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id)
+-- 7. route: Routes (destination and distance from Dhaka)
+CREATE TABLE route (
+    route_id VARCHAR(4) PRIMARY KEY,
+    distance DECIMAL(5,1) NOT NULL,
+    stoppage_location VARCHAR(20) NOT NULL
 );
 
--- 8. bus_info: Buses and the passenger on board
+-- 8. bus_info: Buses (each bus runs on one route)
 CREATE TABLE bus_info (
     bus_id INT PRIMARY KEY,
     bus_no VARCHAR(10) NOT NULL,
-    bus_type VARCHAR(10) NOT NULL CHECK (bus_type IN ('AC', 'Non-AC')),
+    bus_type VARCHAR(10) NOT NULL CHECK (bus_type IN ('AC', 'NON AC')),
     departure_time DATE NOT NULL,
     starting_point VARCHAR(20) NOT NULL,
     destination VARCHAR(20) NOT NULL,
     capacity INT DEFAULT 50 CHECK (capacity > 0) NOT NULL,
-    passenger_id INT NOT NULL,
-    CONSTRAINT FK_bus_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id)
+    route_id VARCHAR(4) NOT NULL,
+    CONSTRAINT fk_bus_route FOREIGN KEY (route_id) REFERENCES route(route_id)
 );
 
--- 9. route: Route / stoppage of each bus
-CREATE TABLE route (
-    route_id VARCHAR(4) PRIMARY KEY,
-    distance DECIMAL(5,1) NOT NULL,
-    stoppage_location VARCHAR(20) NOT NULL,
+-- 9. info_seat: Seat of each passenger on a bus
+CREATE TABLE info_seat (
+    seat_id VARCHAR(10) PRIMARY KEY,
+    seat_type VARCHAR(20) NOT NULL CHECK (seat_type IN ('WINDOW', 'AISLE')),
+    passenger_id INT NOT NULL,
     bus_id INT NOT NULL,
-    CONSTRAINT fk_bus_id FOREIGN KEY (bus_id) REFERENCES bus_info(bus_id)
+    CONSTRAINT FK_passenger FOREIGN KEY (passenger_id) REFERENCES passenger_info(passenger_id),
+    CONSTRAINT fk_seat_bus FOREIGN KEY (bus_id) REFERENCES bus_info(bus_id)
 );
 
 -- ===== Sample data =====
 
 -- 1. manager (5 rows)
-INSERT INTO manager (manager_id, manager_name, manager_phone)
-VALUES (1, 'Abdul Karim', '01711111111');
-INSERT INTO manager (manager_id, manager_name, manager_phone)
-VALUES (2, 'Sultana Ahmed', '01733333333');
+INSERT INTO manager (manager_id, manager_name, manager_phone, manager_salary, manager_hire_date)
+VALUES (1, 'Abdul Karim', '01711111111', 20000, DATE '2025-01-10');
+INSERT INTO manager (manager_id, manager_name, manager_phone, manager_salary, manager_hire_date)
+VALUES (2, 'Sultana Ahmed', '01733333333', 20000, DATE '2025-01-10');
 INSERT INTO manager (manager_id, manager_name, manager_phone, manager_salary, manager_hire_date)
 VALUES (3, 'Mohammad Shahid', '01722222222', 30000, DATE '2024-01-01');
 INSERT INTO manager (manager_id, manager_name, manager_phone, manager_salary, manager_hire_date)
@@ -123,8 +123,8 @@ INSERT INTO manager (manager_id, manager_name, manager_phone, manager_salary, ma
 VALUES (5, 'Rasel Hossain', '01755555555', 25000, DATE '2024-03-01');
 
 -- 2. ticket_agent (10 rows)
-INSERT INTO ticket_agent (agent_id, agent_name, agent_phone, manager_id)
-VALUES (11, 'Abdul Rahim', '01711111112', 1);
+INSERT INTO ticket_agent (agent_id, agent_name, agent_phone, agent_salary, ticket_agent_hire_date, manager_id)
+VALUES (11, 'Abdul Rahim', '01711111112', 15000, DATE '2025-01-11', 1);
 INSERT INTO ticket_agent (agent_id, agent_name, agent_phone, agent_salary, ticket_agent_hire_date, manager_id)
 VALUES (12, 'Mehedi Hasan', '01711111113', 16000, DATE '2025-02-01', 1);
 INSERT INTO ticket_agent (agent_id, agent_name, agent_phone, agent_salary, ticket_agent_hire_date, manager_id)
@@ -292,130 +292,110 @@ VALUES (19, 'Hasan Mahmud', 34, '01721111111', 'Not Provided', 19);
 INSERT INTO passenger_info (passenger_id, passenger_name, passenger_age, passenger_phone, passenger_address, customer_id)
 VALUES (20, 'Farhana Karim', 30, '01722222222', 'Not Provided', 20);
 
--- 7. info_seat (20 rows)
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('A1', 'WINDOW', 1);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('B1', 'AISLE', 2);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('C1', 'WINDOW', 3);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('D1', 'AISLE', 4);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('E1', 'WINDOW', 5);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('F1', 'AISLE', 6);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('G1', 'WINDOW', 7);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('H1', 'AISLE', 8);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('I1', 'WINDOW', 9);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('J1', 'AISLE', 10);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('K1', 'WINDOW', 11);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('L1', 'AISLE', 12);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('M1', 'WINDOW', 13);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('N1', 'AISLE', 14);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('O1', 'WINDOW', 15);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('P1', 'AISLE', 16);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('Q1', 'WINDOW', 17);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('R1', 'AISLE', 18);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('S1', 'WINDOW', 19);
-INSERT INTO info_seat (seat_id, seat_type, passenger_id)
-VALUES ('T1', 'AISLE', 20);
+-- 7. route (10 rows, one route for each destination)
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R1', 250, 'Chittagong');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R2', 240, 'Sylhet');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R3', 270, 'Rajshahi');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R4', 230, 'Barisal');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R5', 330, 'Khulna');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R6', 120, 'Mymensingh');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R7', 95, 'Comilla');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R8', 80, 'Tangail');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R9', 80, 'Rajbari');
+INSERT INTO route (route_id, distance, stoppage_location)
+VALUES ('R10', 200, 'Noakhali');
 
--- 8. bus_info (20 rows)
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (1, 'B-A1', 'AC', DATE '2025-01-15', 'Dhaka', 'Chittagong', 55, 1);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (2, 'B-B1', 'Non-AC', DATE '2025-01-15', 'Dhaka', 'Chittagong', 60, 2);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (3, 'B-C1', 'AC', DATE '2025-01-20', 'Dhaka', 'Sylhet', 55, 3);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (4, 'B-D1', 'Non-AC', DATE '2025-01-20', 'Dhaka', 'Sylhet', 60, 4);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (5, 'B-E1', 'AC', DATE '2025-01-18', 'Dhaka', 'Rajshahi', 55, 5);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (6, 'B-F1', 'Non-AC', DATE '2025-01-18', 'Dhaka', 'Rajshahi', 60, 6);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (7, 'B-G1', 'AC', DATE '2025-01-22', 'Dhaka', 'Barisal', 55, 7);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (8, 'B-H1', 'Non-AC', DATE '2025-01-22', 'Dhaka', 'Barisal', 60, 8);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (9, 'B-I1', 'AC', DATE '2025-01-25', 'Dhaka', 'Khulna', 55, 9);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (10, 'B-J1', 'Non-AC', DATE '2025-01-25', 'Dhaka', 'Khulna', 60, 10);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (11, 'B-K1', 'AC', DATE '2025-01-28', 'Dhaka', 'Mymensingh', 55, 11);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (12, 'B-L1', 'Non-AC', DATE '2025-01-28', 'Dhaka', 'Mymensingh', 60, 12);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (13, 'B-M1', 'AC', DATE '2025-01-30', 'Dhaka', 'Comilla', 55, 13);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (14, 'B-N1', 'Non-AC', DATE '2025-01-30', 'Dhaka', 'Comilla', 60, 14);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (15, 'B-O1', 'AC', DATE '2025-02-02', 'Dhaka', 'Tangail', 55, 15);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (16, 'B-P1', 'Non-AC', DATE '2025-02-02', 'Dhaka', 'Tangail', 60, 16);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (17, 'B-Q1', 'AC', DATE '2025-02-05', 'Dhaka', 'Rajbari', 55, 17);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (18, 'B-R1', 'Non-AC', DATE '2025-02-05', 'Dhaka', 'Rajbari', 60, 18);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (19, 'B-S1', 'AC', DATE '2025-02-10', 'Dhaka', 'Noakhali', 55, 19);
-INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, passenger_id)
-VALUES (20, 'B-T1', 'Non-AC', DATE '2025-02-10', 'Dhaka', 'Noakhali', 60, 20);
+-- 8. bus_info (20 rows, two buses (AC and NON AC) on each route)
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (1, 'B-A1', 'AC', DATE '2025-01-15', 'Dhaka', 'Chittagong', 55, 'R1');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (2, 'B-B1', 'NON AC', DATE '2025-01-15', 'Dhaka', 'Chittagong', 60, 'R1');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (3, 'B-C1', 'AC', DATE '2025-01-20', 'Dhaka', 'Sylhet', 55, 'R2');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (4, 'B-D1', 'NON AC', DATE '2025-01-20', 'Dhaka', 'Sylhet', 60, 'R2');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (5, 'B-E1', 'AC', DATE '2025-01-18', 'Dhaka', 'Rajshahi', 55, 'R3');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (6, 'B-F1', 'NON AC', DATE '2025-01-18', 'Dhaka', 'Rajshahi', 60, 'R3');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (7, 'B-G1', 'AC', DATE '2025-01-22', 'Dhaka', 'Barisal', 55, 'R4');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (8, 'B-H1', 'NON AC', DATE '2025-01-22', 'Dhaka', 'Barisal', 60, 'R4');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (9, 'B-I1', 'AC', DATE '2025-01-25', 'Dhaka', 'Khulna', 55, 'R5');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (10, 'B-J1', 'NON AC', DATE '2025-01-25', 'Dhaka', 'Khulna', 60, 'R5');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (11, 'B-K1', 'AC', DATE '2025-01-28', 'Dhaka', 'Mymensingh', 55, 'R6');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (12, 'B-L1', 'NON AC', DATE '2025-01-28', 'Dhaka', 'Mymensingh', 60, 'R6');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (13, 'B-M1', 'AC', DATE '2025-01-30', 'Dhaka', 'Comilla', 55, 'R7');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (14, 'B-N1', 'NON AC', DATE '2025-01-30', 'Dhaka', 'Comilla', 60, 'R7');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (15, 'B-O1', 'AC', DATE '2025-02-02', 'Dhaka', 'Tangail', 55, 'R8');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (16, 'B-P1', 'NON AC', DATE '2025-02-02', 'Dhaka', 'Tangail', 60, 'R8');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (17, 'B-Q1', 'AC', DATE '2025-02-05', 'Dhaka', 'Rajbari', 55, 'R9');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (18, 'B-R1', 'NON AC', DATE '2025-02-05', 'Dhaka', 'Rajbari', 60, 'R9');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (19, 'B-S1', 'AC', DATE '2025-02-10', 'Dhaka', 'Noakhali', 55, 'R10');
+INSERT INTO bus_info (bus_id, bus_no, bus_type, departure_time, starting_point, destination, capacity, route_id)
+VALUES (20, 'B-T1', 'NON AC', DATE '2025-02-10', 'Dhaka', 'Noakhali', 60, 'R10');
 
--- 9. route (20 rows)
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R1', 270, 'Rajshahi', 1);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R2', 270, 'Rajshahi', 2);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R3', 230, 'Barisal', 3);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R4', 230, 'Barisal', 4);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R5', 330, 'Khulna', 5);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R6', 330, 'Khulna', 6);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R7', 120, 'Mymensingh', 7);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R8', 120, 'Mymensingh', 8);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R9', 95, 'Comilla', 9);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R10', 95, 'Comilla', 10);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R11', 80, 'Tangail', 11);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R12', 80, 'Tangail', 12);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R13', 80, 'Rajbari', 13);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R14', 80, 'Rajbari', 14);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R15', 200, 'Noakhali', 15);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R16', 200, 'Noakhali', 16);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R17', 270, 'Rajshahi', 17);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R18', 270, 'Rajshahi', 18);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R19', 230, 'Barisal', 19);
-INSERT INTO route (route_id, distance, stoppage_location, bus_id)
-VALUES ('R20', 230, 'Barisal', 20);
+-- 9. info_seat (20 rows)
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('A1', 'WINDOW', 1, 1);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('B1', 'AISLE', 2, 2);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('C1', 'WINDOW', 3, 3);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('D1', 'AISLE', 4, 4);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('E1', 'WINDOW', 5, 5);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('F1', 'AISLE', 6, 6);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('G1', 'WINDOW', 7, 7);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('H1', 'AISLE', 8, 8);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('I1', 'WINDOW', 9, 9);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('J1', 'AISLE', 10, 10);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('K1', 'WINDOW', 11, 11);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('L1', 'AISLE', 12, 12);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('M1', 'WINDOW', 13, 13);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('N1', 'AISLE', 14, 14);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('O1', 'WINDOW', 15, 15);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('P1', 'AISLE', 16, 16);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('Q1', 'WINDOW', 17, 17);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('R1', 'AISLE', 18, 18);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('S1', 'WINDOW', 19, 19);
+INSERT INTO info_seat (seat_id, seat_type, passenger_id, bus_id)
+VALUES ('T1', 'AISLE', 20, 20);
 
 COMMIT;

@@ -67,10 +67,21 @@ FROM manager;
 
 SELECT * FROM simple_manager_view;
 
--- 13. Complex view: managers who earn more than 20000
-CREATE VIEW high_paid_managers AS
-SELECT manager_id, manager_name, manager_salary
-FROM manager
-WHERE manager_salary > 20000;
+-- 13. Complex view (join + group function): tickets sold by each manager's agents
+CREATE VIEW manager_sales_view AS
+SELECT m.manager_id, m.manager_name,
+       COUNT(ti.ticket_id) AS tickets_sold,
+       SUM(ti.price) AS total_sales
+FROM manager m, ticket_agent ta, ticket_info ti
+WHERE m.manager_id = ta.manager_id
+AND ta.agent_id = ti.agent_id
+GROUP BY m.manager_id, m.manager_name;
 
-SELECT * FROM high_paid_managers;
+SELECT * FROM manager_sales_view;
+
+-- Extra: which bus and seat each passenger has, and the route distance
+SELECT p.passenger_name, s.seat_id, s.seat_type, b.bus_no, b.bus_type, r.stoppage_location, r.distance
+FROM passenger_info p, info_seat s, bus_info b, route r
+WHERE p.passenger_id = s.passenger_id
+AND s.bus_id = b.bus_id
+AND b.route_id = r.route_id;

@@ -10,7 +10,7 @@ created in **MySQL (XAMPP)** and connected to **Java** using JDBC.
 ## Features
 
 - 9 related tables with primary keys, foreign keys, `CHECK`, `UNIQUE`, `NOT NULL` and `DEFAULT` constraints
-- Sample data (145 rows in total)
+- Sample data (135 rows in total)
 - Test queries: simple query, single row function, aggregate function, subqueries, 4 types of joins
 - One simple view and one complex view
 - Java programs that connect to the database and print the tables
@@ -25,9 +25,9 @@ created in **MySQL (XAMPP)** and connected to **Java** using JDBC.
 | 4 | `customer_info` | Customers who buy tickets | `ticket_id` → ticket_info |
 | 5 | `payment_details` | Payments (30% off for NON AC) | `ticket_id` → ticket_info, `customer_id` → customer_info |
 | 6 | `passenger_info` | Passengers | `customer_id` → customer_info |
-| 7 | `info_seat` | Seats | `passenger_id` → passenger_info |
-| 8 | `bus_info` | Buses | `passenger_id` → passenger_info |
-| 9 | `route` | Routes / stoppages | `bus_id` → bus_info |
+| 7 | `route` | Routes (destination and distance) | – |
+| 8 | `bus_info` | Buses | `route_id` → route |
+| 9 | `info_seat` | Seat of each passenger on a bus | `passenger_id` → passenger_info, `bus_id` → bus_info |
 
 ## Project Structure
 
@@ -132,17 +132,17 @@ Replace `ManagerTable` with `TicketAgentTable`, `TicketInfoTable` or `CustomerIn
    ![passenger_info structure](screenshots/tables/06_passenger_info_structure.png)
    ![passenger_info data](screenshots/tables/06_passenger_info_data.png)
 
-7. **info_seat**
-   ![info_seat structure](screenshots/tables/07_info_seat_structure.png)
-   ![info_seat data](screenshots/tables/07_info_seat_data.png)
+7. **route**
+   ![route structure](screenshots/tables/07_route_structure.png)
+   ![route data](screenshots/tables/07_route_data.png)
 
 8. **bus_info**
    ![bus_info structure](screenshots/tables/08_bus_info_structure.png)
    ![bus_info data](screenshots/tables/08_bus_info_data.png)
 
-9. **route**
-   ![route structure](screenshots/tables/09_route_structure.png)
-   ![route data](screenshots/tables/09_route_data.png)
+9. **info_seat**
+   ![info_seat structure](screenshots/tables/09_info_seat_structure.png)
+   ![info_seat data](screenshots/tables/09_info_seat_data.png)
 
 ### Queries and Views
 
@@ -152,6 +152,8 @@ All query screenshots are in [`screenshots/queries`](screenshots/queries). A few
   ![aggregate function](screenshots/queries/03_aggregate_function.png)
 - **Inner join** – each ticket with the agent who sold it
   ![inner join](screenshots/queries/08_inner_join.png)
+- **Complex view** – tickets sold and total sales for each manager
+  ![complex view](screenshots/queries/13_complex_view.png)
 
 ### Java Connection (XAMPP + MySQL)
 

@@ -4,12 +4,12 @@
 
 -- Views (only if you ran 03_queries_and_views.sql)
 DROP VIEW simple_manager_view;
-DROP VIEW high_paid_managers;
+DROP VIEW manager_sales_view;
 
 -- Tables
-DROP TABLE route;
-DROP TABLE bus_info;
 DROP TABLE info_seat;
+DROP TABLE bus_info;
+DROP TABLE route;
 DROP TABLE passenger_info;
 DROP TABLE payment_details;
 DROP TABLE customer_info;
