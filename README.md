@@ -15,19 +15,25 @@ created in **MySQL (XAMPP)** and connected to **Java** using JDBC.
 - One simple view and one complex view
 - Java programs that connect to the database and print the tables
 
-## Tables
+## Technologies Used
 
-| # | Table | What it stores | Foreign key |
-|---|-------|----------------|-------------|
-| 1 | `manager` | Managers | – |
-| 2 | `ticket_agent` | Ticket agents | `manager_id` → manager |
-| 3 | `ticket_info` | Tickets sold | `agent_id` → ticket_agent |
-| 4 | `customer_info` | Customers who buy tickets | `ticket_id` → ticket_info |
-| 5 | `payment_details` | Payments (30% off for NON AC) | `ticket_id` → ticket_info, `customer_id` → customer_info |
-| 6 | `passenger_info` | Passengers | `customer_id` → customer_info |
-| 7 | `route` | Routes (destination and distance) | – |
-| 8 | `bus_info` | Buses | `route_id` → route |
-| 9 | `info_seat` | Seat of each passenger on a bus | `passenger_id` → passenger_info, `bus_id` → bus_info |
+- Oracle Database (SQL, constraints, joins, subqueries, views)
+- MySQL with XAMPP (phpMyAdmin)
+- Java with JDBC (MySQL Connector/J 8.0.30)
+
+## Database Tables
+
+The database has **9 related tables**:
+
+- **manager** – managers who supervise ticket agents
+- **ticket_agent** – ticket agents (`manager_id` → manager)
+- **ticket_info** – tickets sold by an agent (`agent_id` → ticket_agent)
+- **customer_info** – customers who buy tickets (`ticket_id` → ticket_info)
+- **payment_details** – payment of each customer, 30% off for NON AC (`ticket_id` → ticket_info, `customer_id` → customer_info)
+- **passenger_info** – passengers travelling for a customer (`customer_id` → customer_info)
+- **route** – destination and distance of each route
+- **bus_info** – buses and the route they run on (`route_id` → route)
+- **info_seat** – seat of each passenger on a bus (`passenger_id` → passenger_info, `bus_id` → bus_info)
 
 ## Project Structure
 
@@ -45,12 +51,12 @@ DataBase-BusTicketCounterManagement/
 │   ├── src/        # DBConnection + one program for each table
 │   └── lib/        # MySQL JDBC driver (.jar)
 ├── docs/           # project report (.docx) and ER diagram
-└── screenshots/    # tables, queries and Java output
+└── screenshots/    # tables, complex view and Java output
 ```
 
 ## Requirements
 
-- **Oracle Database XE** (with Application Express or SQL Developer) – for the Oracle scripts
+- **Oracle Database XE** (with Application Express or SQL Developer) – download from [oracle.com/downloads](https://www.oracle.com/downloads/)
 - **XAMPP** – download from [apachefriends.org](https://www.apachefriends.org/) (for MySQL + phpMyAdmin)
 - **JDK 8 or newer** – download from [Adoptium](https://adoptium.net/)
 - **VS Code** with the **Extension Pack for Java**, or NetBeans
@@ -61,7 +67,7 @@ DataBase-BusTicketCounterManagement/
 git clone https://github.com/munshi-rishad/DataBase-BusTicketCounterManagement.git
 ```
 
-## Setup
+## Setup and Run
 
 ### Oracle
 
@@ -102,112 +108,170 @@ Replace `ManagerTable` with `TicketAgentTable`, `TicketInfoTable` or `CustomerIn
 
 ## ER Diagram
 
-![ER Diagram](docs/er_diagram.jpeg)
+<p align="center">
+  <img src="docs/er_diagram.jpeg" alt="ER Diagram" width="800">
+</p>
 
 ## Screenshots
 
-### Tables in Oracle
+Each table is shown twice: first its structure, then the data inserted into it.
 
-Each table shows its structure (`CREATE TABLE` + `DESC`) on the left and its data on the right.
+### 1. Manager Table – Structure
 
-<table>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/01_manager_structure.png" alt="1. manager – structure"><br><sub>1. manager – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/01_manager_data.png" alt="1. manager – data"><br><sub>1. manager – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/02_ticket_agent_structure.png" alt="2. ticket_agent – structure"><br><sub>2. ticket_agent – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/02_ticket_agent_data.png" alt="2. ticket_agent – data"><br><sub>2. ticket_agent – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/03_ticket_info_structure.png" alt="3. ticket_info – structure"><br><sub>3. ticket_info – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/03_ticket_info_data.png" alt="3. ticket_info – data"><br><sub>3. ticket_info – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/04_customer_info_structure.png" alt="4. customer_info – structure"><br><sub>4. customer_info – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/04_customer_info_data.png" alt="4. customer_info – data"><br><sub>4. customer_info – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/05_payment_details_structure.png" alt="5. payment_details – structure"><br><sub>5. payment_details – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/05_payment_details_data.png" alt="5. payment_details – data"><br><sub>5. payment_details – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/06_passenger_info_structure.png" alt="6. passenger_info – structure"><br><sub>6. passenger_info – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/06_passenger_info_data.png" alt="6. passenger_info – data"><br><sub>6. passenger_info – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/07_route_structure.png" alt="7. route – structure"><br><sub>7. route – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/07_route_data.png" alt="7. route – data"><br><sub>7. route – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/08_bus_info_structure.png" alt="8. bus_info – structure"><br><sub>8. bus_info – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/08_bus_info_data.png" alt="8. bus_info – data"><br><sub>8. bus_info – data</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/tables/09_info_seat_structure.png" alt="9. info_seat – structure"><br><sub>9. info_seat – structure</sub></td>
-    <td width="50%" align="center"><img src="screenshots/tables/09_info_seat_data.png" alt="9. info_seat – data"><br><sub>9. info_seat – data</sub></td>
-  </tr>
-</table>
+`CREATE TABLE manager` and `DESC manager` in Oracle: columns, data types and constraints.
 
-### Queries and Views
+<p align="center">
+  <img src="screenshots/tables/01_manager_structure.png" alt="Manager Table – Structure" width="800">
+</p>
 
-<table>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/01_simple_query.png" alt="Simple query"><br><sub>Simple query</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/02_single_row_function.png" alt="Single row function"><br><sub>Single row function</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/03_aggregate_function.png" alt="Aggregate function"><br><sub>Aggregate function</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/04_single_row_subquery_1.png" alt="Single row subquery 1"><br><sub>Single row subquery 1</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/05_single_row_subquery_2.png" alt="Single row subquery 2"><br><sub>Single row subquery 2</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/06_multiple_row_subquery_1.png" alt="Multiple row subquery 1"><br><sub>Multiple row subquery 1</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/07_multiple_row_subquery_2.png" alt="Multiple row subquery 2"><br><sub>Multiple row subquery 2</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/08_inner_join.png" alt="Inner join"><br><sub>Inner join</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/09_left_outer_join.png" alt="Left outer join"><br><sub>Left outer join</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/10_right_outer_join.png" alt="Right outer join"><br><sub>Right outer join</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/11_full_outer_join.png" alt="Full outer join"><br><sub>Full outer join</sub></td>
-    <td width="50%" align="center"><img src="screenshots/queries/12_simple_view.png" alt="Simple view"><br><sub>Simple view</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/queries/13_complex_view.png" alt="Complex view (join + GROUP BY)"><br><sub>Complex view (join + GROUP BY)</sub></td>
-    <td width="50%"></td>
-  </tr>
-</table>
+### 2. Manager Table – Inserted Data
 
-### Java Connection (XAMPP + MySQL)
+Rows inserted into `manager` (`SELECT * FROM manager`).
 
-<table>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/manager_xampp_table.png" alt="Manager table in phpMyAdmin (XAMPP)"><br><sub>Manager table in phpMyAdmin (XAMPP)</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_agent_xampp_table.png" alt="Ticket Agent table in phpMyAdmin (XAMPP)"><br><sub>Ticket Agent table in phpMyAdmin (XAMPP)</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_info_xampp_table.png" alt="Ticket Info table in phpMyAdmin (XAMPP)"><br><sub>Ticket Info table in phpMyAdmin (XAMPP)</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/customer_info_xampp_table.png" alt="Customer Info table in phpMyAdmin (XAMPP)"><br><sub>Customer Info table in phpMyAdmin (XAMPP)</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/manager_code.png" alt="Manager – Java code"><br><sub>Manager – Java code</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/manager_output.png" alt="Manager – output"><br><sub>Manager – output</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_agent_code.png" alt="Ticket Agent – Java code"><br><sub>Ticket Agent – Java code</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_agent_output.png" alt="Ticket Agent – output"><br><sub>Ticket Agent – output</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_info_code.jpeg" alt="Ticket Info – Java code"><br><sub>Ticket Info – Java code</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/ticket_info_output.jpeg" alt="Ticket Info – output"><br><sub>Ticket Info – output</sub></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="screenshots/java/customer_info_code.png" alt="Customer Info – Java code"><br><sub>Customer Info – Java code</sub></td>
-    <td width="50%" align="center"><img src="screenshots/java/customer_info_output.png" alt="Customer Info – output"><br><sub>Customer Info – output</sub></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="screenshots/tables/01_manager_data.png" alt="Manager Table – Inserted Data" width="800">
+</p>
 
+### 3. Ticket Agent Table – Structure
+
+`CREATE TABLE ticket_agent` and `DESC ticket_agent` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/02_ticket_agent_structure.png" alt="Ticket Agent Table – Structure" width="800">
+</p>
+
+### 4. Ticket Agent Table – Inserted Data
+
+Rows inserted into `ticket_agent` (`SELECT * FROM ticket_agent`).
+
+<p align="center">
+  <img src="screenshots/tables/02_ticket_agent_data.png" alt="Ticket Agent Table – Inserted Data" width="800">
+</p>
+
+### 5. Ticket Info Table – Structure
+
+`CREATE TABLE ticket_info` and `DESC ticket_info` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/03_ticket_info_structure.png" alt="Ticket Info Table – Structure" width="800">
+</p>
+
+### 6. Ticket Info Table – Inserted Data
+
+Rows inserted into `ticket_info` (`SELECT * FROM ticket_info`).
+
+<p align="center">
+  <img src="screenshots/tables/03_ticket_info_data.png" alt="Ticket Info Table – Inserted Data" width="800">
+</p>
+
+### 7. Customer Info Table – Structure
+
+`CREATE TABLE customer_info` and `DESC customer_info` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/04_customer_info_structure.png" alt="Customer Info Table – Structure" width="800">
+</p>
+
+### 8. Customer Info Table – Inserted Data
+
+Rows inserted into `customer_info` (`SELECT * FROM customer_info`).
+
+<p align="center">
+  <img src="screenshots/tables/04_customer_info_data.png" alt="Customer Info Table – Inserted Data" width="800">
+</p>
+
+### 9. Payment Details Table – Structure
+
+`CREATE TABLE payment_details` and `DESC payment_details` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/05_payment_details_structure.png" alt="Payment Details Table – Structure" width="800">
+</p>
+
+### 10. Payment Details Table – Inserted Data
+
+Rows inserted into `payment_details` (`SELECT * FROM payment_details`).
+
+<p align="center">
+  <img src="screenshots/tables/05_payment_details_data.png" alt="Payment Details Table – Inserted Data" width="800">
+</p>
+
+### 11. Passenger Info Table – Structure
+
+`CREATE TABLE passenger_info` and `DESC passenger_info` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/06_passenger_info_structure.png" alt="Passenger Info Table – Structure" width="800">
+</p>
+
+### 12. Passenger Info Table – Inserted Data
+
+Rows inserted into `passenger_info` (`SELECT * FROM passenger_info`).
+
+<p align="center">
+  <img src="screenshots/tables/06_passenger_info_data.png" alt="Passenger Info Table – Inserted Data" width="800">
+</p>
+
+### 13. Route Table – Structure
+
+`CREATE TABLE route` and `DESC route` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/07_route_structure.png" alt="Route Table – Structure" width="800">
+</p>
+
+### 14. Route Table – Inserted Data
+
+Rows inserted into `route` (`SELECT * FROM route`).
+
+<p align="center">
+  <img src="screenshots/tables/07_route_data.png" alt="Route Table – Inserted Data" width="800">
+</p>
+
+### 15. Bus Info Table – Structure
+
+`CREATE TABLE bus_info` and `DESC bus_info` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/08_bus_info_structure.png" alt="Bus Info Table – Structure" width="800">
+</p>
+
+### 16. Bus Info Table – Inserted Data
+
+Rows inserted into `bus_info` (`SELECT * FROM bus_info`).
+
+<p align="center">
+  <img src="screenshots/tables/08_bus_info_data.png" alt="Bus Info Table – Inserted Data" width="800">
+</p>
+
+### 17. Seat Info Table – Structure
+
+`CREATE TABLE info_seat` and `DESC info_seat` in Oracle: columns, data types and constraints.
+
+<p align="center">
+  <img src="screenshots/tables/09_info_seat_structure.png" alt="Seat Info Table – Structure" width="800">
+</p>
+
+### 18. Seat Info Table – Inserted Data
+
+Rows inserted into `info_seat` (`SELECT * FROM info_seat`).
+
+<p align="center">
+  <img src="screenshots/tables/09_info_seat_data.png" alt="Seat Info Table – Inserted Data" width="800">
+</p>
+
+### 19. Complex View
+
+`manager_sales_view` joins three tables and uses `GROUP BY` to show tickets sold and total sales for each manager.
+
+<p align="center">
+  <img src="screenshots/queries/13_complex_view.png" alt="Complex View" width="800">
+</p>
+
+### 20. Java Connection Output
+
+A Java program connects to the MySQL database (XAMPP) with JDBC and prints the manager table.
+
+<p align="center">
+  <img src="screenshots/java/manager_output.png" alt="Java Connection Output" width="800">
+</p>
