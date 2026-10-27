@@ -7,7 +7,7 @@ customers, payments, passengers, seats, buses and routes.
 The tables, data, queries and views were built in **Oracle**. The same database was also
 created in **MySQL (XAMPP)** and connected to **Java** using JDBC.
 
-**Semester:** Fall 2024-2025 (Introduction to Database)
+**Semester:** Fall 2024-2025
 
 ## Features
 
